@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Form</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .container {
+            border: 1px solid salmon;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: rgba(211, 211, 211, 0.6);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form div {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        input[type="file"] {
+            width: 100%;
+        }
+
+        button {
+            background-color: salmon;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #ff704d;
+        }
+
+        #userInfo h3 {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        #userInfo img {
+            max-width: 100px;
+            display: none;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>User Form</h1>
+        <form id="signup" enctype="multipart/form-data">
+            <div>
+                <label for="name">User Name</label>
+                <input type="text" id="name" name="userName" placeholder="Enter your name">
+            </div>
+            <div>
+                <label for="email">User Email</label>
+                <input type="email" id="email" name="userEmail" placeholder="Enter your email">
+            </div>
+            <div>
+                <label for="pwd">User Password</label>
+                <input type="password" id="pwd" name="userPassword" placeholder="Enter your password">
+            </div>
+
+            <div>
+                <label for="file">Upload your document</label>
+                <input type="file" id="document" name="userDocument" accept="image/*">
+            </div>
+
+            <button type="submit" onclick="saveForm(event)">Subscribe</button>
+        </form>
+    </div>
+
+    <div id="userInfo" class="container">
+        <h1>User info</h1>
+        <img id="preview" alt="Document Preview">
+        <h3 id="displayName">Name: </h3>
+        <h3 id="displayEmail">Email: </h3>
+        <h3 id="displayPassword">Password: </h3>
+    </div>
+
+    <script>
+        function saveForm(event) {
+            event.preventDefault();
+
+            let form = document.getElementById('signup');
+            let formData = new FormData(form);
+
+            let name = formData.get('userName');
+            let email = formData.get('userEmail');
+            let password = formData.get('userPassword');
+            let file = formData.get('userDocument');
+
+            // Display the form data on the page
+            document.getElementById('displayName').innerText = `Name: ${name}`;
+            document.getElementById('displayEmail').innerText = `Email: ${email}`;
+            document.getElementById('displayPassword').innerText = `Password: ${password}`;
+
+            // If the uploaded document is an image, display the preview
+            if (file && file.type.startsWith('image/')) {
+                let reader = new FileReader();
+                reader.onload = function(e) {
+                    let img = document.getElementById('preview');
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                document.getElementById('preview').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+
+</html>
